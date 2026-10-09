@@ -70,18 +70,39 @@
     });
   });
 
-  // Email-based contact form: no backend or third-party form service required.
   const form = document.getElementById('contactForm');
+  const formNote = document.getElementById('formNote');
+  const submitButton = form.querySelector('[type="submit"]');
   form.addEventListener('submit', event => {
     event.preventDefault();
     if (!form.reportValidity()) return;
-    const data = new FormData(form);
-    const subject = encodeURIComponent(`Portfolio enquiry: ${data.get('interest')}`);
-    const body = encodeURIComponent(
-      `Hi Seun,\n\nMy name is ${data.get('name')}.\nEmail: ${data.get('email')}\nI'm interested in: ${data.get('interest')}\n\nProject details:\n${data.get('message')}\n\nSent from seunabbey.github.io`
-    );
-    document.getElementById('formNote').textContent = 'Your email app should open with the enquiry prepared. Please review and send it there.';
-    window.location.href = `mailto:oluwaseunabiodun100@gmail.com?subject=${subject}&body=${body}`;
+    const fields = new FormData(form);
+    const payload = Object.fromEntries(fields.entries());
+    submitButton.disabled = true;
+    formNote.textContent = 'Sending your enquiry…';
+
+    fetch('https://formsubmit.co/ajax/oluwaseunabiodun100@gmail.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(async response => {
+        const result = await response.json();
+        if (!response.ok || !result.success || result.success === 'false') {
+          throw new Error(result.message || 'The enquiry could not be sent. Please try again.');
+        }
+        form.reset();
+        formNote.textContent = 'Thanks for reaching out. Your enquiry has been sent to Seun.';
+      })
+      .catch(error => {
+        formNote.textContent = `We couldn’t send your enquiry. ${error.message} Please try again or email oluwaseunabiodun100@gmail.com directly.`;
+      })
+      .finally(() => {
+        submitButton.disabled = false;
+      });
   });
 
   // Subtle reveal motion, with graceful fallback and reduced-motion support.

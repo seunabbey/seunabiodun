@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="portfolio.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <title>Contact | Seun O. Abiodun</title>
+</head>
+
+<body class="contact">
+    <header class="header">
+        <a href="index.html" class="logo">Seun O. A.</a>
+        
+        <div class="menu-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="contact.html" class="active">Contact</a>
+        </nav>
+    </header>
+
+<section class="form-container" id="contact">
+  <form id="contact-form" action="https://formspree.io/f/mwpqwvnq" method="POST">
+    <label for="name">Full Name</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="service">Select a Service</label>
+    <select id="service" name="service" required>
+      <option value="">-- Please choose an option --</option>
+      <option value="Website Design">Website Design</option>
+      <option value="WordPress Customization">WordPress Customization</option>
+      <option value="SEO Optimization">SEO Optimization</option>
+      <option value="Website Maintenance">Website Maintenance</option>
+      <option value="Mobile UI Design">Mobile UI Design</option>
+    </select>
+
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="5" required></textarea>
+
+    <div class="submit-row">
+      <button type="submit" class="btn">Send Message</button>
+
+      <div class="home-sci">
+          <a href="https://facebook.com/blackmercury" target="_blank"><i class='bx bxl-facebook'></i></a>
+          <a href="https://x.com/coach_laolu" target="_blank"><i class='bx bxl-twitter'></i></a>
+          <a href="https://linkedin.com/in/oluwaseun-oladipupo-abiodun" target="_blank"><i class='bx bxl-linkedin'></i></a>
+      </div>
+
+    </div>
+  </form>
+  
+  <div id="thank-you" style="display: none; color: #00abf0; font-size: 20px; text-align: center; padding: 50px 0;">
+    ✅ Thank you! Your message has been sent successfully.
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('contact-form');
+  const thankYouMessage = document.getElementById('thank-you');
+  const formArea = document.getElementById('form-area');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const action = form.action;
+
+    try {
+      await fetch(action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      formArea.style.display = 'none';
+      thankYouMessage.style.display = 'block';
+    } catch (error) {
+      alert('Oops! Something went wrong. Please try again later.');
+    }
+  });
+
+  
+</script>
+<script src="menu.js"></script>
+</body>
+</html>
